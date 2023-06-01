@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" prefHeight="411.0" prefWidth="585.0" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.graph_coloring.graph_coloring.HelloController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+   <children>
+      <BorderPane>
+         <left>
+            <VBox BorderPane.alignment="CENTER">
+               <children>
+                  <RadioButton fx:id="addVertexButton" mnemonicParsing="false" style="-fx-border-insets: 7 7 7 7; -fx-pref-width: 185; -fx-pref-height: 35;" text="Adauga nod" />
+                  <RadioButton fx:id="addEdgeButton" mnemonicParsing="false" style="-fx-border-insets: 7 7 7 7; -fx-pref-width: 185; -fx-pref-height: 35;" text="Adauga muchie" />
+                  <RadioButton fx:id="removeVertexButton" mnemonicParsing="false" style="-fx-border-insets: 7 7 7 7; -fx-pref-width: 185; -fx-pref-height: 35;" text="Sterge nod" />
+                  <RadioButton fx:id="removeEdgeButton" mnemonicParsing="false" style="-fx-border-insets: 7 7 7 7; -fx-pref-width: 185; -fx-pref-height: 35;" text="Sterge muchie" />
+                  <Button  fx:id="removeGraph" mnemonicParsing="false" style="-fx-background-color: RED; -fx-padding: 10px;" text="Sterge graful" textFill="WHITE" />
+                  <Button fx:id="startAlgoGa" mnemonicParsing="false" style="-fx-background-color: GREEN; -fx-padding: 10px;" text="START GA" textFill="WHITE" />
+                  <Button fx:id="startAlgoGreedy" mnemonicParsing="false" style="-fx-background-color: GREEN; -fx-padding: 10px;" text="START GREEDY" textFill="WHITE" />
+                  <Button fx:id="startAlgoBkt" mnemonicParsing="false" style="-fx-background-color: GREEN; -fx-padding: 10px;" text="START BKT" textFill="WHITE" />
+               </children>
+            </VBox>
+         </left>
+         <center>
+            <Pane fx:id="graphPane" prefHeight="383.0" prefWidth="319.0" style="-fx-border-color: black; -fx-border-width: 1px" BorderPane.alignment="CENTER" />
+         </center></BorderPane>
+   </children>
+</VBox>
