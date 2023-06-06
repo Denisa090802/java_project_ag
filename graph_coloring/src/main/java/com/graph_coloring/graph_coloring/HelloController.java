@@ -11,12 +11,19 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class HelloController {
     VisualGraph graph;
@@ -45,11 +52,24 @@ public class HelloController {
     Button removeGraph;
 
     @FXML
+    ChoiceBox existingGraphSelector;
+    @FXML
+    Button loadExistingGraph;
+
+    @FXML
     public void initialize() {
         graph = new VisualGraph(graphPane);
 
         RadioButtonEvent(addVertexButton, addEdgeButton, removeVertexButton, addEdgeButton, removeEdgeButton);
         RadioButtonEvent(removeVertexButton, addVertexButton, addEdgeButton, removeEdgeButton, removeVertexButton);
+
+        Set<String> existingGraphs = Stream.of(new File("../graph_coloring/test_instances").listFiles())
+                .filter(file -> !file.isDirectory())
+                .map(File::getName)
+                .collect(Collectors.toSet());
+        existingGraphs.forEach(name -> {
+            existingGraphSelector.getItems().add(name);
+        });
 
         startAlgoGa.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -86,6 +106,49 @@ public class HelloController {
             public void handle(ActionEvent actionEvent) {
                 graph.removeAll();
                 graphPane.getChildren().clear();
+            }
+        });
+
+        loadExistingGraph.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                graph.removeAll();
+                graphPane.getChildren().clear();
+                try {
+                    BufferedReader reader = new BufferedReader(new FileReader("../graph_coloring/test_instances/" + (String)existingGraphSelector.getValue()));
+                    String line = reader.readLine();
+
+                    while (line != null) {
+                        if(line.charAt(0) == 'p') {
+                            String[] parts = line.split(" ");
+                            int numOfNodes = Integer.parseInt(parts[2]);
+                            for(int i = 0; i < numOfNodes; i++) {
+                                graph.addVertex(new VisualVertex(0, 0));
+                            }
+                        }
+                        if(line.charAt(0) == 'e') {
+                            try {
+                                String[] parts = line.split(" ");
+                                int fNode = Integer.parseInt(parts[1]);
+                                int sNode = Integer.parseInt(parts[2]);
+                                graph.addEdge(new VisualEdge(
+                                        graph.getVertexes().get(fNode-1),
+                                        graph.getVertexes().get(sNode-1)
+                                ), fNode-1, sNode-1);
+                            }
+                            catch (Exception ex) { }
+                        }
+                        // read next line
+                        line = reader.readLine();
+                    }
+
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                graphPane.getChildren().add(new TextArea());
+                ((TextArea)graphPane.getChildren().get(0))
+                        .appendText("Graph loaded... " + graph.getVertexes().size() + " nodes and " + graph.getEdges().size() + " edges.");
             }
         });
 
@@ -191,7 +254,7 @@ public class HelloController {
         ColoringGA ga = new ColoringGA(
                 graph,
                 200,
-                2000
+                50
         );
         ga.Execute();
     }

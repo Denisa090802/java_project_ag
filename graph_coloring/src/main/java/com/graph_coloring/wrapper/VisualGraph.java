@@ -1,5 +1,6 @@
 package com.graph_coloring.wrapper;
 
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import org.graph4j.Edge;
@@ -35,6 +36,17 @@ public class VisualGraph {
         int index = Vertexes.indexOf(vertex);
         Vertexes.remove(vertex);
         Graph.removeVertex(index);
+    }
+
+    public Pane getUIContainer() { return UIContainer; }
+
+    public void WriteLog(String text) {
+        try {
+            ((TextArea)UIContainer.getChildren().get(0)).appendText(text);
+        }
+        catch (Exception ex) {
+
+        }
     }
 
     public VisualVertex findClosestVertex(double x, double y) {
@@ -75,6 +87,7 @@ public class VisualGraph {
     public List<VisualVertex> getVertexes() {
          return Vertexes;
     }
+    public List<VisualEdge> getEdges() { return Edges; }
 
     public Graph getGraph() {
         return Graph;
@@ -86,6 +99,11 @@ public class VisualGraph {
                 Vertexes.indexOf(edge.getVertex1()),
                 Vertexes.indexOf(edge.getVertex2())
         );
+    }
+
+    public void addEdge(VisualEdge edge, int index1, int index2) {
+        Edges.add(edge);
+        Graph.addEdge(index1, index2);
     }
 
     public void removeEdge(VisualEdge edge) {

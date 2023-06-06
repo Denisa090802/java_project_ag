@@ -35,6 +35,8 @@ public class ColoringGA {
         this.maximumGenerations = maximumGenerations;
         this.number_of_colors = Utils.MaximumNumberOfColors(this.graph);
 
+        this.visualGraph.WriteLog("Initialized graph");
+
         population = new ArrayList<>();
     }
 
